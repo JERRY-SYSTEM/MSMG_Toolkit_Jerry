@@ -1,0 +1,1 @@
+"%~dp0Bin\su.exe" /c "%~dp0Toolkit.cmd"
