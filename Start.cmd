@@ -1,1 +1,1 @@
-"%~dp0UICORE.exe" surun
+"%~dp0su.exe" -c "%~dp0Toolkit.cmd"

@@ -1,5 +1,5 @@
 @echo off
-title MSMG Toolkit v13.6 Jerry修改版 V1 Build20240526
+title MSMG Toolkit v13.7 Jerry修改版 V1.1-Patch1 Build20240812
 :: 设置默认控制台背景和前景色
 color 1f
 cd /D "%~dp0" >nul
@@ -780,12 +780,12 @@ if "%SelectedSourceOS%" neq "w7" if "%SelectedSourceOS%" neq "w81" if "%ImageBui
 	echo.        Internet Explorer 是一个 Web 浏览器，允许用户在 Internet 上查看网页。
 	echo.        兼容性        ：Adobe 安装程序
 	echo.
-	echo.  [1] %C_EdgeChromium% Microsoft Edge Chromium
+	echo.  [3] %C_EdgeChromium% Microsoft Edge Chromium
 	echo.        基于 Chromium 的 Microsoft Edge web 浏览器。
 	echo.        兼容性        ：推荐
 	echo.
 	if "%SelectedSourceOS%" equ "w11" (
-		echo.  [2] %C_EdgeWebView% Microsoft Edge WebView
+		echo.  [4] %C_EdgeWebView% Microsoft Edge WebView
 		echo.        Microsoft Edge WebView 控件允许你在本机应用程序中嵌入 Web 技术
 		echo.        （HTML、CSS 和 JavaScript）。
 		echo.        依赖于        ：Microsoft Edge Chromium
@@ -1117,7 +1117,7 @@ if "%SelectedSourceOS%" neq "w7" if "%SelectedSourceOS%" neq "w81" if "%ImageBui
 	echo.         可以预览 Windows 功能。在预览 Windows 时，预览体验成员可以提供反馈并
 	echo.         与 Microsoft 工程师直接互动，以帮助塑造 Windows 的未来。
 	echo.
-	echo.  [A]    所有隐私组件
+	echo.  [A]   所有隐私组件
 	echo.  [B]   回到上一步
 	echo.  [N]   下一步
 	echo.
@@ -2182,6 +2182,16 @@ if "%Components%" neq "" (
 echo.-------------------------------------------------------------------------------
 echo.####系统精简完成################################################################
 echo.-------------------------------------------------------------------------------
+echo.
+echo.MSMG遇到精简错误就会直接终止任务，下面的组件将不会被精简。
+echo.
+echo.如果你没有遇到错误，所有组件全部精简，请输入1继续；
+echo.
+echo.如果你遇到错误，请记住报错前最后一个组件，输入2回到选择界面，取消选择报错组件。
+echo.
+choice /C:12 /N /M "请输入你的选项 ："
+if errorlevel 2 goto :RemoveInternetMenu
+if errorlevel 1 echo.
 
 :Stop
 echo.
@@ -2192,7 +2202,9 @@ echo.
 echo.输入1打开Dism++用于优化系统精简APPX，输入2跳过此步进入下一个环节。
 echo.
 choice /C:12 /N /M "请输入你的选项 ："
+if errorlevel 2 goto :skipdism
 if errorlevel 1 %Bin%\DISM++\dism++%HostArchitecture%.exe
+:skipdism
 echo.===============================================================================
 echo.
 
@@ -2257,6 +2269,9 @@ if "%SelectedSourceOS%" equ "w10" (
 	echo.  [X]    下一步
 	echo.
 	echo.===============================================================================
+	echo.
+	echo.  Tips：此界面不支持批量选择
+	echo.
 	set /p MenuChoice=请输入你的选项 ：
 
 	if "!MenuChoice!" equ "1" set "Tweak=DisableDriversUpdates"
@@ -2315,6 +2330,9 @@ if "%SelectedSourceOS%" equ "w11" (
 	echo.  [X]    下一步
 	echo.
 	echo.===============================================================================
+	echo.
+	echo.  Tips：此界面不支持批量选择
+	echo.
 	set /p MenuChoice=请输入你的选项 ：
 
 	if "!MenuChoice!" equ "1" set "Tweak=DisableDriversUpdates"
@@ -3426,7 +3444,7 @@ echo.
 echo.  [1]   轻量精简
 echo.  [2]   深度精简
 echo.
-echo.  不精简可以保证系统稳定；深度精简可能会导致系统问题，请虚拟机测试后再安装。
+echo.  轻度精简可以保证系统稳定；深度精简可能会导致系统问题，请虚拟机测试后再安装。
 echo.  不知道如何选择的，请选择1。
 echo.
 choice /C:12 /N /M "请输入你的选项 ："
